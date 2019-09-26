@@ -10,7 +10,8 @@ import { Button } from '@material-ui/core';
 class User extends React.Component {
   constructor(props) {
     super(props);
-    this.clicked = this.SendVerificationCode.bind(this);
+    this.Login = this.Login.bind(this);
+    this.SendVerificationCode = this.SendVerificationCode.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.state = { 
@@ -52,6 +53,7 @@ class User extends React.Component {
             onChange={e => this.handleChange(e)}
          />
          <Button onClick={(e) => this.onSubmit(e)}>Verify Code</Button>
+         <Button onClick={(e) => this.Login()}>Login</Button>
         <br/>
       </div>
     );
@@ -73,7 +75,22 @@ class User extends React.Component {
     // alert('A name was submitted: ' + this.state.value);
     e.preventDefault();
   }
-
+  async Login(){
+    var qs = require('qs');
+    console.log('test');
+    try {
+      const response = await API.post(
+        '/api/login/',
+        qs.stringify({
+          'username': 'divya.kumar@gridworks-ic.org',
+          'password': 'password123',
+        })
+      );
+      console.log('Returned Data:', response);
+    } catch (e) {
+      console.log(`Axios failed: ${e}`);
+    }
+  }
   async SendVerificationCode(phoneNumber){
     var qs = require('qs');
     console.log('test');
